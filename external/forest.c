@@ -17,15 +17,6 @@ const DecisionTreeNode *train_model_tree(double **data,
                                                                  csv_dim->cols,
                                                                  ctx);
 
-    if (log_level > 1)
-        printf("calculated best split for the dataset in train_model_tree\n"
-               "half1: %ld\nhalf2: %ld\nbest gini: %f\nbest value: %f\nbest index: %d\n",
-               data_split.data[0].length,
-               data_split.data[1].length,
-               data_split.gini,
-               data_split.value,
-               data_split.index);
-
     populate_split_data(root, &data_split);
 
     // Start building the tree recursively.
@@ -106,8 +97,6 @@ void free_random_forest(const DecisionTreeNode ***random_forest, const size_t le
     // Free the actual array of pointers to the nodes.
     free(*random_forest);
 
-    if (log_level > 2)
-        printf("total DecisionTreeNode freed: %ld\n", freeCount);
 }
 
 void print_params(const RandomForestParameters *params)

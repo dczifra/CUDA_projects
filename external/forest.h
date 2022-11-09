@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "tree.h"
 
-extern int log_level;
+//extern int log_level;
 
 /*
 Parameters for a Random Forest model.

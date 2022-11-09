@@ -3,6 +3,7 @@
 */
 
 #include "utils.h"
+int log_level;
 
 int get_log_level()
 {

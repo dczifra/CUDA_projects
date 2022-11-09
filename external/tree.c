@@ -26,9 +26,6 @@ DecisionTreeNode *empty_node(long *id)
 
     (*id)++;
 
-    if (log_level > 2)
-        printf("created a DecisionTreeNode with id %ld stored at address %p \n", node->id, node);
-
     return node;
 }
 
@@ -49,9 +46,6 @@ struct with unique target classes found in the dataset at column with index 'col
 */
 DecisionTreeTargetClasses get_target_class_values(double **data, size_t rows, size_t cols, const ModelContext *ctx)
 {
-    if (log_level > 1)
-        printf("generating class value set...\n");
-
     size_t count = 0;
     int *target_class_values = malloc(count * sizeof(int));
 
@@ -60,16 +54,12 @@ DecisionTreeTargetClasses get_target_class_values(double **data, size_t rows, si
         // Skip rows that we are withholding from training for evaluation.
         if (is_row_part_of_testing_fold(i, ctx))
         {
-            if (log_level > 1)
-                printf("  skipping row %ld which is part of testing fold %ld\n", i, ctx->testingFoldIdx);
             continue;
         }
 
         int class_target = (int)data[i][cols - 1];
         if (!contains_int(target_class_values, count, class_target))
         {
-            if (log_level > 1)
-                printf("adding %d \n", class_target);
             count++;
             int *temp = realloc(target_class_values, count * sizeof(int));
             if (temp != NULL)
@@ -77,8 +67,6 @@ DecisionTreeTargetClasses get_target_class_values(double **data, size_t rows, si
             target_class_values[count - 1] = class_target;
         }
     }
-    if (log_level > 1)
-        printf("-------------------------------\ncount of unique classes: %ld\n", count);
     return (DecisionTreeTargetClasses){count, target_class_values};
 }
 
@@ -121,9 +109,6 @@ DecisionTreeData *split_dataset(int feature_index,
                                 size_t rows,
                                 size_t cols)
 {
-    if (log_level > 1)
-        printf("splitting dataset into two halves...\n");
-
     // Buffers to hold rows of data as we are distributing rows based on the split.
     double **left = (double **)malloc(1 * sizeof(double) * cols);
     double **right = (double **)malloc(1 * sizeof(double) * cols);
@@ -155,9 +140,6 @@ DecisionTreeData *split_dataset(int feature_index,
     data_split[0] = (DecisionTreeData){left_count, left};
     data_split[1] = (DecisionTreeData){right_count, right};
 
-    if (log_level > 1)
-        printf("split dataset into: %ld | %ld\n", left_count, right_count);
-
     return data_split;
 }
 
@@ -166,9 +148,6 @@ double calculate_gini_index(DecisionTreeData *data_split,
                             size_t class_labels_count,
                             size_t cols)
 {
-    if (log_level > 1)
-        printf("calculating gini index based on split...\n");
-
     // DecisionTreeData data split should consist of two halves.
     int count = 2;
     size_t n_instances = data_split[0].length + data_split[1].length;
@@ -198,12 +177,6 @@ double calculate_gini_index(DecisionTreeData *data_split,
         gini += (1.0 - sum) * ((double)size / (double)n_instances);
     }
 
-    if (log_level > 1)
-    {
-        printf("gini: %f\n", gini);
-        printf("-----------------------------------------\n");
-    }
-
     return gini;
 }
 
@@ -213,11 +186,6 @@ DecisionTreeDataSplit calculate_best_data_split(double **data,
                                                 size_t cols,
                                                 const ModelContext *ctx)
 {
-    if (log_level > 1)
-    {
-        printf("calculating best split for dataset...\n");
-        printf("rows: %ld\ncols: %ld\n", rows, cols);
-    }
 
     // Target classes available in this dataset.
     DecisionTreeTargetClasses classes = get_target_class_values(data, rows, cols, ctx);
@@ -244,13 +212,9 @@ DecisionTreeDataSplit calculate_best_data_split(double **data,
         int index = rand() % (max + 1 - min) + min;
         if (!contains_int(features, max_features /* size of 'features' array */, index))
         {
-            if (log_level > 1)
-                printf("adding unique index: %d\n", index);
             features[count++] = index;
         }
     }
-    if (log_level > 1)
-        printf("-----------------------------------------\n");
 
     for (size_t i = 0; i < max_features; ++i)
     {
@@ -424,9 +388,6 @@ void free_decision_tree_node(const DecisionTreeNode *node, long *freeCount)
         free_decision_tree_node(node->leftChild, freeCount);
     if (node->rightChild)
         free_decision_tree_node(node->rightChild, freeCount);
-
-    if (log_level > 2)
-        printf("freeing DecisionTreeNode with id=%ld\n", node->id);
 
     if (node && node->split_data_halves && node->split_data_halves->length)
     {

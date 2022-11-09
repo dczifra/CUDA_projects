@@ -50,22 +50,10 @@ void hyperparameter_search(double **data, struct dim *csv_dim)
                 max_features : max_features
             };
 
-            if (log_level > 0)
-            {
-                printf("[hyperparameter search] running cross_validate\n");
-                printf("[hyperparameter search] ");
-                print_params(&params);
-            }
-
             double cv_accuracy = cross_validate(data,
                                                 &params,
                                                 csv_dim,
                                                 k_folds);
-
-            if (log_level > 0)
-                printf("[hyperparameter search] cross validation accuracy: %f%% (%ld%%)\n",
-                       (cv_accuracy * 100),
-                       (long)(cv_accuracy * 100));
 
             // Update best accuracy and best parameters found so far from the hyperparameter search.
             if (cv_accuracy > best_accuracy)
@@ -104,9 +92,6 @@ double eval_model(const DecisionTreeNode **random_forest,
                                        params->n_estimators,
                                        data[row_id]);
         int ground_truth = (int)data[row_id][csv_dim->cols - 1];
-
-        if (log_level > 1)
-            printf("majority vote: %d | %d ground truth\n", prediction, ground_truth);
 
         if (prediction == ground_truth)
             ++num_correct;

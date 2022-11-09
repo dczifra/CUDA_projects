@@ -20,11 +20,6 @@ struct ModelContext
 typedef struct ModelContext ModelContext;
 
 /*
-The debug log level that can be adjusted via an argument.
-*/
-int log_level;
-
-/*
 Given a pointer to a buffer array of integers returns whether or not a given integer 'n'
 is present in the array.
 */

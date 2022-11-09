@@ -110,9 +110,6 @@ void parse_csv(const char *file_name, double **data_p, const struct dim csv_dim)
         }
     }
 
-    if (log_level > 1)
-        printf("read %d rows from file %s\n", row - 1, file_name);
-
     fclose(csv_file);
     free(buffer);
 }
