@@ -16,6 +16,9 @@ CUDA (parallel) part
 ./bin/cuda
 ```
 
+# GPU part
+* https://github.com/kirnhans/15418-project
+
 # Documentation
 The *main.c* source file contains a simple Random Forest implementation, where with the given
 parameters 85% accuracy can be achieved.
