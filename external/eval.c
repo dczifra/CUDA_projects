@@ -34,12 +34,12 @@ void hyperparameter_search(double **data, struct dim *csv_dim)
     // Best params computed from running the hyperparameter search.
     size_t best_n_estimators = -1;
     double best_accuracy = -1;
-
-    for (size_t i = 0; i < n; ++i)
+    size_t i,j;
+    for (i = 0; i < n; ++i)
     {
         size_t n_estimators = estimators[i]; /* Number of trees in the forest. */
 
-        for (size_t j = 0; j < n; ++j)
+        for (j = 0; j < n; ++j)
         {
             size_t max_depth = max_depths[j];
 
@@ -86,7 +86,8 @@ double eval_model(const DecisionTreeNode **random_forest,
     // iterating the rows for which we are getting predictions at an offset that can be computed
     // as 'testingFoldIdx * rowsPerFold' and make predictions for 'rowsPerFold' number of rows
     size_t row_id_offset = ctx->testingFoldIdx * ctx->rowsPerFold;
-    for (size_t row_id = row_id_offset; row_id < row_id_offset + ctx->rowsPerFold; ++row_id)
+    size_t row_id;
+    for (row_id = row_id_offset; row_id < row_id_offset + ctx->rowsPerFold; ++row_id)
     {
         int prediction = predict_model(&random_forest,
                                        params->n_estimators,
@@ -110,7 +111,8 @@ double cross_validate(double **data,
     // Iterate through the fold indeces and fit models on the selections. The current 'foldIdx' is the index
     // of the fold in the array of all loaded data that is the fold that's currently the test fold, with all of
     // the other folds being used for training.
-    for (size_t foldIdx = 0; foldIdx < k_folds; ++foldIdx)
+    size_t foldIdx;
+    for (foldIdx = 0; foldIdx < k_folds; ++foldIdx)
     {
         const ModelContext ctx = (ModelContext){
             testingFoldIdx : foldIdx /* Fold to use for evaluation. */,

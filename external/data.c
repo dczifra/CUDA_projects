@@ -117,8 +117,8 @@ void parse_csv(const char *file_name, double **data_p, const struct dim csv_dim)
 void pivot_data(double *data, const struct dim csv_dim, double ***pivoted_data_p)
 {
     (*pivoted_data_p) = _2d_calloc(csv_dim.rows, csv_dim.cols);
-
-    for (size_t i = 0; i < csv_dim.rows; ++i)
-        for (size_t j = 0; j < csv_dim.cols; ++j)
+    size_t i,j;
+    for (i = 0; i < csv_dim.rows; ++i)
+        for (j = 0; j < csv_dim.cols; ++j)
             (*pivoted_data_p)[i][j] = data[(i * csv_dim.cols) + j];
 }

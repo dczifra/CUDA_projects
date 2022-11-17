@@ -22,7 +22,8 @@ void set_log_level(int selected_log_level)
 
 int contains_int(int *arr, size_t n, int val)
 {
-    for (size_t i = 0; i < n; ++i)
+  size_t i;
+    for (i = 0; i < n; ++i)
     {
         if (arr[i] == val)
             return 1;
@@ -45,12 +46,13 @@ double **combine_arrays(double **first, double **second, size_t n1, size_t n2, s
 {
     double **combined = (double **)malloc((n1 + n2) * sizeof(double) * cols);
     int row_index = 0;
-    for (size_t i = 0; i < n1; ++i)
+    size_t i,j;
+    for (i = 0; i < n1; ++i)
     {
         double *row = first[i];
         combined[row_index++] = row;
     }
-    for (size_t j = 0; j < n2; ++j)
+    for (j = 0; j < n2; ++j)
     {
         double *row = second[j];
         combined[row_index++] = row;
@@ -67,8 +69,8 @@ double **_2d_malloc(const size_t rows, const size_t cols)
     data = (double **)malloc(len);
 
     ptr = (double *)(data + rows);
-
-    for (size_t i = 0; i < rows; ++i)
+    size_t i;
+    for (i = 0; i < rows; ++i)
         data[i] = ptr + cols * i;
 
     return data;
@@ -83,8 +85,8 @@ double **_2d_calloc(const size_t rows, const size_t cols)
     data = (double **)calloc(len, sizeof(double));
 
     ptr = (double *)(data + rows);
-
-    for (size_t i = 0; i < rows; ++i)
+    size_t i;
+    for (i = 0; i < rows; ++i)
         data[i] = ptr + cols * i;
 
     return data;
@@ -93,7 +95,8 @@ double **_2d_calloc(const size_t rows, const size_t cols)
 double _1d_checksum(double *data, size_t size)
 {
     double sum = 0;
-    for (size_t i = 0; i < size; ++i)
+    size_t i;
+    for (i = 0; i < size; ++i)
     {
         sum += data[i];
     }
@@ -103,9 +106,10 @@ double _1d_checksum(double *data, size_t size)
 double _2d_checksum(double **data, size_t rows, size_t cols)
 {
     double sum = 0;
-    for (size_t i = 0; i < rows; ++i)
+    size_t i,j;
+    for (i = 0; i < rows; ++i)
     {
-        for (size_t j = 0; j < cols; ++j)
+        for (j = 0; j < cols; ++j)
         {
             sum += data[i][j];
         }

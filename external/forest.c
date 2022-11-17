@@ -51,7 +51,8 @@ const DecisionTreeNode **train_model(double **data,
 
     // Populate the array with allocated memory for the random forest with pointers to individual decision
     // trees.
-    for (size_t i = 0; i < params->n_estimators; ++i)
+    size_t i; 
+    for (i = 0; i < params->n_estimators; ++i)
     {
         random_forest[i] = train_model_tree(data, params, csv_dim, &nodeId, ctx);
     }
@@ -62,7 +63,8 @@ int predict_model(const DecisionTreeNode ***random_forest, size_t n_estimators, 
 {
     int zeroes = 0;
     int ones = 0;
-    for (size_t i = 0; i < n_estimators; ++i)
+    size_t i;
+    for (i = 0; i < n_estimators; ++i)
     {
         int prediction;
         make_prediction((*random_forest)[i] /* root of the tree */,
@@ -89,7 +91,8 @@ int predict_model(const DecisionTreeNode ***random_forest, size_t n_estimators, 
 void free_random_forest(const DecisionTreeNode ***random_forest, const size_t length)
 {
     long freeCount = 0;
-    for (size_t idx = 0; idx < length; ++idx)
+    size_t idx = 0;
+    for (idx = 0; idx < length; ++idx)
     {
         // Recursively free this DecisionTree rooted at the current node.
         free_decision_tree_node((*random_forest)[idx], &freeCount);

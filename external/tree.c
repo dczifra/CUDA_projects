@@ -48,8 +48,8 @@ DecisionTreeTargetClasses get_target_class_values(double **data, size_t rows, si
 {
     size_t count = 0;
     int *target_class_values = malloc(count * sizeof(int));
-
-    for (size_t i = 0; i < rows; ++i)
+    size_t i;
+    for (i = 0; i < rows; ++i)
     {
         // Skip rows that we are withholding from training for evaluation.
         if (is_row_part_of_testing_fold(i, ctx))
@@ -79,7 +79,8 @@ int get_leaf_node_class_value(double **data, size_t rows, size_t cols)
 {
     int zeroes = 0;
     int ones = 0;
-    for (size_t i = 0; i < rows; ++i)
+    size_t i;
+    for (i = 0; i < rows; ++i)
     {
         int class_label = (int)data[i][cols - 1];
         if (class_label == 0)
@@ -115,8 +116,8 @@ DecisionTreeData *split_dataset(int feature_index,
 
     size_t left_count = 0;
     size_t right_count = 0;
-
-    for (size_t i = 0; i < rows; ++i)
+    size_t i;
+    for (i = 0; i < rows; ++i)
     {
         double *row = data[i];
         if (row[feature_index] < value)
@@ -152,7 +153,8 @@ double calculate_gini_index(DecisionTreeData *data_split,
     int count = 2;
     size_t n_instances = data_split[0].length + data_split[1].length;
     double gini = 0.0;
-    for (size_t i = 0; i < count; ++i)
+    size_t i;
+    for (i = 0; i < count; ++i)
     {
         DecisionTreeData group = data_split[i];
 
@@ -161,11 +163,13 @@ double calculate_gini_index(DecisionTreeData *data_split,
             continue;
 
         double sum = 0.0;
-        for (size_t j = 0; j < class_labels_count; ++j)
+	size_t j;
+        for (j = 0; j < class_labels_count; ++j)
         {
             int class = class_labels[j];
             int occurences = 0;
-            for (size_t k = 0; k < size; ++k)
+            size_t k;
+	    for (k = 0; k < size; ++k)
             {
                 int label = (int)group.data[k][cols - 1];
                 if (label == class)
@@ -199,7 +203,8 @@ DecisionTreeDataSplit calculate_best_data_split(double **data,
 
     // Create a features array and initialize to avoid non-set memory.
     int *features = malloc(max_features * sizeof(int));
-    for (size_t i = 0; i < max_features; ++i)
+    size_t i;
+    for (i = 0; i < max_features; ++i)
         features[i] = -1;
 
     size_t count = 0;
@@ -215,11 +220,11 @@ DecisionTreeDataSplit calculate_best_data_split(double **data,
             features[count++] = index;
         }
     }
-
-    for (size_t i = 0; i < max_features; ++i)
+    size_t j;
+    for (i = 0; i < max_features; ++i)
     {
         int feature_index = features[i];
-        for (size_t j = 0; j < rows; ++j)
+        for (j = 0; j < rows; ++j)
         {
             DecisionTreeData *data_split = split_dataset(feature_index,
                                                          data[j][feature_index],
